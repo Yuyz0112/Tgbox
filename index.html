@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zhcn">
+<head>
+  <meta charset="UTF-8">
+  <title>Tgbox Examples</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <h1>文章标题</h1>
+  <div id="article">
+  <img src="images/1_b.jpg">
+  <img src="images/2_b.jpg">
+  <img src="images/3_b.jpg">
+  <img src="images/4_b.jpg">
+  <img src="http://wow.tgbus.com/style2015/images/se1/01.jpg">
+  </div>
+
+  <script src="http://wow.tgbus.com/style2015/js/jquery-1.7.2.min.js"></script>
+  <script>
+  $(function(){
+    for (var i = 1; i < $('#article').find('img').length+1; i++) {
+      $('#article').find('img').eq(i-1).addClass('js-Tgbox').attr('data-role','Tgbox').attr('data-index',i).attr('data-src',$('#article').find('img').eq(i-1).attr('src'));
+    };
+    var Tgbox= new TgBox();
+  })
+  </script>
+  <script src="js/main.js"></script>
+</body>
+</html>

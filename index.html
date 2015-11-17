@@ -9,10 +9,10 @@
   <h1>文章标题</h1>
   <div id="article">
   <img src="images/1_b.jpg">
-  <img src="images/2_b.jpg">
-  <img src="images/3_b.jpg">
-  <img src="images/4_b.jpg">
-  <img src="http://wow.tgbus.com/style2015/images/se1/01.jpg">
+  <img src="images/1 (2).jpg">
+  <img src="images/2 (1).jpg">
+  <img src="images/3 (1).jpg">
+  <img src="http://tv05.tgbusdata.cn/v2/thumb/jpg/N0I5MSwxNDQwLDEwMCw0LDMsMSwtMSwwLHJrNTA=/u/wow.tgbus.com/UploadFiles_2396/201511/20151113101330168.jpg" width="1440" height="900" alt="Tgbox图片测试" class="js-Tgbox" data-role="Tgbox" data-index="1" data-src="http://tv05.tgbusdata.cn/v2/thumb/jpg/N0I5MSwxNDQwLDEwMCw0LDMsMSwtMSwwLHJrNTA=/u/wow.tgbus.com/UploadFiles_2396/201511/20151113101330168.jpg">
   </div>
 
   <script src="http://wow.tgbus.com/style2015/js/jquery-1.7.2.min.js"></script>
@@ -20,6 +20,12 @@
   $(function(){
     for (var i = 1; i < $('#article').find('img').length+1; i++) {
       $('#article').find('img').eq(i-1).addClass('js-Tgbox').attr('data-role','Tgbox').attr('data-index',i).attr('data-src',$('#article').find('img').eq(i-1).attr('src'));
+      if ($('#article').find('img').eq(i-1).width()>580) {
+        $('#article').find('img').eq(i-1).css({
+          'width':580,
+          'height':'auto'
+          });
+      }
     };
     var Tgbox= new TgBox();
   })

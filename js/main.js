@@ -23,18 +23,89 @@
 		})
 
 		this.Mask.click(function(){
+			$('body').css('overflow','auto');
 			$(this).fadeOut();
 			self.Popup.fadeOut();
 		})
 		this.closeBtn.click(function(){
+			$('body').css('overflow','auto');
 			self.Mask.fadeOut();
 			self.Popup.fadeOut();
+		})
+
+		//control
+		this.prevBtn.click(function(e){
+			if(!$(this).hasClass("disabled")){
+				e.stopPropagation();
+				self.goTo("prev");
+			}
+		})
+		this.nextBtn.click(function(e){
+			if(!$(this).hasClass("disabled")){
+				e.stopPropagation();
+				self.goTo("next");
+			}
+		})
+
+		//zoom and drag
+		this.Popup.bind('mousewheel',function(e){
+			e.stopPropagation();
+			$('body').css('overflow','hidden');
+			self.zoomPic(this);
+		})
+		this.Popup.bind('mousedown',function(e){
+			var self = this;
+			var initX=e.clientX;
+          	var initY=e.clientY;
+      		var	x = $(self).position().left;
+      		var	y = $(self).position().top-$(window).scrollTop();
+			$("html").mousemove(function(e){
+          		$(self).css("left",x+e.clientX-initX).css("top",y+e.clientY-initY);
+          	});
+		})
+		this.Popup.bind('mouseup',function(){
+			$('html').unbind('mousemove');
 		})
 	}
 
 	TgBox.prototype = {
+		zoomPic:function(o){
+			var zoom=parseInt(o.style.zoom, 10)||100;
+			zoom+=event.wheelDelta/20;
+			if (zoom>0) o.style.zoom=zoom+'%';
+			return false;
+		},
+		goTo:function(dir){
+			if(dir == "next"){
+				this.index++;
+				if(this.index >= $('#article').find('img').length){
+					this.nextBtn.addClass("disabled");
+				}
+				if(this.index!=0){
+					this.prevBtn.removeClass("disabled");
+				}
+				var src = $('#article').find('img').eq(this.index-1).attr('src');
+				this.loadSize(src);
+			}else if(dir == "prev"){
+				this.index--;
+				console.log(this.index);
+				if(this.index <= 1){
+					this.prevBtn.addClass("disabled");
+				}
+				if(this.index!=$('#article').find('img').length){
+					this.nextBtn.removeClass("disabled");
+				}
+				var src = $('#article').find('img').eq(this.index-1).attr('src');
+				this.loadSize(src);
+			}
+		},
 		loadSize:function(sourceSrc){
 			var self=this;
+
+			this.pic.css({
+				width:"auto",
+				height:"auto"
+			}).hide();
 
 			this.preLoadImg(sourceSrc,function(){
 				self.pic.attr("src",sourceSrc);
@@ -71,7 +142,7 @@
 			})
 
 			//Write in index
-			this.currentIndex.text("当前位置："+this.index+"/"+$('#article').find('img').length);
+			this.currentIndex.text(this.index+"/"+$('#article').find('img').length);
 		},
 		preLoadImg:function(src,callback){
 			var img = new Image();
@@ -96,10 +167,6 @@
 				winHeight=$(window).height(),
 				viewHeight=winHeight/2+10;
 
-			this.pic.css({
-				width:"auto",
-				height:"auto"
-			}).hide();
 			this.captionArea.hide();
 
 			this.Mask.fadeIn();
@@ -125,6 +192,9 @@
 			if (this.index == 1) {
 				this.prevBtn.addClass("disabled");
 				this.nextBtn.removeClass("disabled");
+				if (indexLength == 1) {
+					this.nextBtn.addClass("disabled");
+				}
 			}else if(this.index == indexLength){
 				this.prevBtn.removeClass("disabled");
 				this.nextBtn.addClass("disabled");
@@ -151,7 +221,7 @@
 				'<span class = "Tgbox-btn-next-icon" > </span> </div> ' +
 				'<span class = "Tgbox-btn-close" > </span> </div>' +
 				'<div class = "Tgbox-caption" >' +
-				'<p class = "Tgbox-index" > 当前位置 0 / 0 </p>' +
+				'<p class = "Tgbox-index" > 0 / 0 </p>' +
 				'</div>';
 
 			this.Popup.html(strDom);

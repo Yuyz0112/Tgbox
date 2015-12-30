@@ -1,35 +1,51 @@
 <!DOCTYPE html>
 <html lang="zhcn">
-<head>
-  <meta charset="UTF-8">
-  <title>Tgbox Examples</title>
-  <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-  <h1>文章标题</h1>
-  <div id="article">
-  <img src="images/1_b.jpg">
-  <img src="images/1 (2).jpg">
-  <img src="images/2 (1).jpg">
-  <img src="images/3 (1).jpg">
-  <img src="http://tv05.tgbusdata.cn/v2/thumb/jpg/N0I5MSwxNDQwLDEwMCw0LDMsMSwtMSwwLHJrNTA=/u/wow.tgbus.com/UploadFiles_2396/201511/20151113101330168.jpg" width="1440" height="900" alt="Tgbox图片测试" class="js-Tgbox" data-role="Tgbox" data-index="1" data-src="http://tv05.tgbusdata.cn/v2/thumb/jpg/N0I5MSwxNDQwLDEwMCw0LDMsMSwtMSwwLHJrNTA=/u/wow.tgbus.com/UploadFiles_2396/201511/20151113101330168.jpg">
-  </div>
-
-  <script src="http://wow.tgbus.com/style2015/js/jquery-1.7.2.min.js"></script>
-  <script>
-  $(function(){
-    for (var i = 1; i < $('#article').find('img').length+1; i++) {
-      $('#article').find('img').eq(i-1).addClass('js-Tgbox').attr('data-role','Tgbox').attr('data-index',i).attr('data-src',$('#article').find('img').eq(i-1).attr('src'));
-      if ($('#article').find('img').eq(i-1).width()>580) {
-        $('#article').find('img').eq(i-1).css({
-          'width':580,
-          'height':'auto'
-          });
-      }
-    };
-    var Tgbox= new TgBox();
-  })
-  </script>
-  <script src="js/main.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <title>Tgbox Examples</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+    p{
+    text-align:center;
+    }
+    </style>
+  </head>
+  <body>
+    <h1>文章标题</h1>
+    <div id="article">
+      <p><img src="images/1_b.jpg"></p>
+      <p><img src="images/1 (2).jpg"></p>
+      <p><img src="images/2 (1).jpg"></p>
+      <p><img src="images/3 (1).jpg"></p>
+      <h2>手动禁用个别图片Tgbox功能</h2>
+      <p><a href="#" target="_blank"><img data-role="Tgbox-abandon" src="http://tv05.tgbusdata.cn/v2/thumb/jpg/N0I5MSwxNDQwLDEwMCw0LDMsMSwtMSwwLHJrNTA=/u/wow.tgbus.com/UploadFiles_2396/201511/20151113101330168.jpg" width="1440" height="900"></a></p>
+    </div>
+    <script src="http://wow.tgbus.com/style2015/js/jquery-1.7.2.min.js"></script>
+    <script>
+      $(function() {
+        for (var i = 1; i < $('#article').find('img').length + 1; i++) {
+          var _this = $('#article').find('img').eq(i - 1);
+          //缩放图片至指定宽度（demo中为580），Tgeditor处理过的图片自带width及height属性，不需要考虑处理宽度时图片是否onload
+          if (_this.width() > 580) {
+            _this.css({
+              'width': 580,
+              'height': 'auto'
+            });
+          }
+          //data-role属性判断图片是否手动禁用Tgbox功能
+          if (_this.attr('data-role') != 'Tgbox-abandon') {
+            //解除图片外包裹的a标签，避免与点击放大功能冲突
+            if (_this.parent('a').html() != undefined) {
+              $(_this).unwrap();
+            };
+            //为图片添加Tgbox触发条件
+            _this.addClass('js-Tgbox').attr('data-role', 'Tgbox').attr('data-index', i).attr('data-src', _this.attr('src'));
+          }
+        }
+        //初始化Tgbox
+        var Tgbox = new TgBox();
+      })
+    </script>
+    <script src="js/main.js"></script>
+  </body>
 </html>

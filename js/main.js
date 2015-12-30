@@ -1,4 +1,5 @@
 ;(function($) {
+
 	var TgBox = function() {
 		var self = this;
 
@@ -69,6 +70,7 @@
 	}
 
 	TgBox.prototype = {
+		
 		zoomPic:function(o){
 			var zoom=parseInt(o.style.zoom, 10)||100;
 			zoom+=event.wheelDelta/20;
@@ -78,13 +80,13 @@
 		goTo:function(dir){
 			if(dir == "next"){
 				this.index++;
-				if(this.index >= $('#article').find('img').length){
+				if(this.index >= $('#article .js-Tgbox').length){
 					this.nextBtn.addClass("disabled");
 				}
 				if(this.index!=0){
 					this.prevBtn.removeClass("disabled");
 				}
-				var src = $('#article').find('img').eq(this.index-1).attr('src');
+				var src = $('#article .js-Tgbox').eq(this.index-1).attr('src');
 				this.loadSize(src);
 			}else if(dir == "prev"){
 				this.index--;
@@ -92,10 +94,10 @@
 				if(this.index <= 1){
 					this.prevBtn.addClass("disabled");
 				}
-				if(this.index!=$('#article').find('img').length){
+				if(this.index!=$('#article .js-Tgbox').length){
 					this.nextBtn.removeClass("disabled");
 				}
-				var src = $('#article').find('img').eq(this.index-1).attr('src');
+				var src = $('#article .js-Tgbox').eq(this.index-1).attr('src');
 				this.loadSize(src);
 			}
 		},
@@ -142,7 +144,7 @@
 			})
 
 			//Write in index
-			this.currentIndex.text(this.index+"/"+$('#article').find('img').length);
+			this.currentIndex.text(this.index+"/"+$('#article .js-Tgbox').length);
 		},
 		preLoadImg:function(src,callback){
 			var img = new Image();
@@ -188,7 +190,7 @@
 			});
 			this.index=currentID;
 
-			var indexLength=$('#article').find('img').length;
+			var indexLength=$('#article .js-Tgbox').length;
 			if (this.index == 1) {
 				this.prevBtn.addClass("disabled");
 				this.nextBtn.removeClass("disabled");

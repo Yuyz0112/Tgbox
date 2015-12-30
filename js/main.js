@@ -70,7 +70,7 @@
 	}
 
 	TgBox.prototype = {
-		
+
 		zoomPic:function(o){
 			var zoom=parseInt(o.style.zoom, 10)||100;
 			zoom+=event.wheelDelta/20;
@@ -148,7 +148,6 @@
 		},
 		preLoadImg:function(src,callback){
 			var img = new Image();
-				img.src=src;
 			/* For IE */
 			if(!!window.ActiveXObject){
 				img.onreadystatechange=function(){
@@ -162,6 +161,7 @@
 					callback();
 				}
 			}
+			img.src=src;
 		},
 		showTgbox:function(sourceSrc,currentID){
 			var self=this,
